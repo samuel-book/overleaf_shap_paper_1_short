@@ -134,13 +134,13 @@ Using the \emph{10k holdout model}, the predicted use of thrombolysis across the
 %\newpage
 \subsection{How much of the hospitals use of thrombolysis can be explained by the differences in the hospital processes, and the differences in the patient mix}
 
-Figure \ref{fig:shap_multiple_regression} shows that 35\% of the variance in observed hosptial thrombolysis rate can be explained by the patient mix, and that 72\% can be explained by hospital processes.
+Figure \ref{fig:shap_multiple_regression} shows that 35\% of the variance in observed between-hosptial thrombolysis use can be explained by the patient mix, 72\% can be explained by hospital processes, and that 94\% can be explained by the combined information from both patient mix and hospital processes. 
 
 
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.9\textwidth]{./images/03e_xgb_10_features_multiple_regression_patient_hosptial}
-    \caption{Multiple regression of revised SHAP values (median of patients attending hospital) with hospital observed thrombolyis rate. LHS: Revised SHAP values refined to patient descriptive features (age, stroke severity, prior disability, onset-to-arrival time, stroke type, type of onset time, anticoagulants, and onset during sleep) RHS: Revised SHAP values refined to hospital descriptive features (arrival-to-scan time, and hospital attended). }
+    \caption{Multiple regression of revised SHAP values (median of patients attending hospital) with hospital observed thrombolyis rate. LHS: Revised SHAP values refined to the eight patient descriptive features (age, stroke severity, prior disability, onset-to-arrival time, stroke type, type of onset time, anticoagulants, and onset during sleep). Middle: Revised SHAP values refined to the two hospital descriptive features (arrival-to-scan time, and hospital attended). RHS: Revised SHAP values for all 10 features (for both hospital and patient descriptive features).}
   \label{fig:shap_multiple_regression}
 \end{figure}
 
