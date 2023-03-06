@@ -1,0 +1,63 @@
+\documentclass{article}
+
+\usepackage{url} % Tidy web links
+\usepackage{microtype} % 'Improved' typesetting
+\usepackage{parskip} % Adds white space between paragraphs
+\usepackage[super]{natbib} % Citations using superscript
+\usepackage[a4paper, left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm]{geometry}
+\usepackage{longtable,booktabs}  % For tables
+\usepackage{caption} % For figure and table captions
+\usepackage{graphicx} % Adds more functionality to graphics for inclusion of figures
+\usepackage{lineno} % Allows use of \linenumbers to add line numbers 
+\usepackage[toc,page]{appendix}
+\usepackage[utf8]{inputenc}
+\frenchspacing % No double spacing between sentences
+\linespread{1.2} % Set linespace
+\usepackage{authblk} % For author formatting
+\usepackage{lmodern} % A scalable font - avoids erros due to non-sclabale fonts
+\usepackage{subcaption} % Allows use of subfigures
+\DeclareUnicodeCharacter{2060}{\nolinebreak} % Prevent unicode (U+2060) error on local complile
+
+% Choose your own colour
+\usepackage{color}
+\newcommand{\rmenote}[2][\textcolor{red}{\dagger}]{\textcolor{red}{$#1$}\marginpar{\color{red}\raggedright\tiny$#1$ #2}}
+\newcommand{\rmeFIXME}[1]{\textcolor{red}{[\textbf{FIXME} \textsl{#1}]}}
+\newcommand{\alnote}[2][\textcolor{blue}{\dagger}]{\textcolor{blue}{$#1$}\marginpar{\color{blue}\raggedright\tiny$#1$ #2}}
+\newcommand{\alFIXME}[1]{\textcolor{blue}{[\textbf{FIXME} \textsl{#1}]}}
+\newcommand{\kpnote}[2][\textcolor{magenta}{\dagger}]{\textcolor{magenta}{$#1$}\marginpar{\color{magenta}\raggedright\tiny$#1$ #2}}
+\newcommand{\kpFIXME}[1]{\textcolor{magenta}{[\textbf{FIXME} \textsl{#1}]}}
+\newcommand{\tmnote}[2][\textcolor{green}{\dagger}]{\textcolor{green}{$#1$}\marginpar{\color{green}\raggedright\tiny$#1$ #2}}
+\newcommand{\tmFIXME}[1]{\textcolor{green}{[\textbf{FIXME} \textsl{#1}]}}
+
+
+\begin{document}
+
+\include{sections/1_title}
+
+\maketitle
+
+\include{sections/2_abstract}
+
+\newpage
+
+%\tableofcontents
+%\newpage
+\input{sections/3_introduction}  % Use input instead of include to avoid page break at end
+\input{sections/4_methods_kp}
+\input{sections/5_results_kp1}
+\input{sections/6_discussion}
+
+\section{References}
+\bibliographystyle{naturemag}
+%\bibliographystyle{plainnat}
+%\bibliographystyle{unsrt}
+%\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+% Force new page
+\clearpage
+\newpage
+% Use * to avoid numbering of section
+%\include{sections/appendix}
+
+\end{document}
