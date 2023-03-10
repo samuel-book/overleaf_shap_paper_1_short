@@ -68,7 +68,9 @@ We identified the patient at each hospital that the model predicted had the high
 %\subsection{Waterfall plots of SHAP values}
 \subsection{SHapley Additive exPlanation values}
 
-We sought to make our models explainable using SHAP values (calculated using the SHAP library \cite{lundberg_unified_2017}). % 1) \cite{Christos Kokkotis} \cite{A. Papadopoulou}
+We sought to make our models explainable using SHAP values (calculated using the SHAP library \cite{lundberg_unified_2017}). SHAP provides a measure of the contribution of each feature value to the final predicted probability of receiving thrombolysis for that individual. SHAP values provide the influence of each feature as the change in log-odds of receiving thrombolysis. SHAP values expressed as log-odds are additive, i.e. the final log-odds of receiving thrombolysis is the sum of the base model prediction (the log-odds of receiving thrombolysis before feature influences are considered), and the SHAP values for each feature (which are in turn comprised of the feature's main effect and all of the pairwise interaction effects with each of the other features). 
+
+% 1) \cite{Christos Kokkotis} \cite{A. Papadopoulou}
 
 %We sought to make our models explainable using SHAP values (calculated using the SHAP library \cite{lundberg_unified_2017}). Machine learning and SHAP have been applied to various other areas of stroke research, to gain insights into the factors that contribute to predicting stroke risk \cite{Christos Kokkotis} \cite{Junjie Liu}, diagnosing stroke from medical images, developing treatment strategies, and analysing outcomes \cite{Po-Yuan Su 2022} \cite{Xiaohan Zheng} \cite{Seong-Hwan Kim}.
 
@@ -76,7 +78,6 @@ We sought to make our models explainable using SHAP values (calculated using the
 %SHAP has been used elsewhere in stroke, focusing on understanding models that are predicting a stroke \cite{Christos Kokkotis}, predicting early outcomes of stroke \cite{Po-Yuan Su 2022}, risk prediction for poststroke AF \cite{Xiaohan Zheng}, identifying the main risk factors causing stroke \cite{Junjie Liu}, predicting if a patient is having a stroke \cite{Yulu Zheng}, and predicting early neurological deterioration for atrial fibrillation (AF)-related stroke \cite{Seong-Hwan Kim}.
 
 %to transform machine learning predictions of influential factors of early outcomes in acute ischaemic stroke into clinically meaningful results \cite{Po-Yuan Su 2022}, and to investigate the impact of the risk factors on the prediction for stroke \cite{Christos Kokkotis} .... do x y and z (cite) \kpFIXME{Do some SHAP stroke reading}. 
-SHAP provides a measure of the contribution of each feature value to the final predicted probability of receiving thrombolysis for that individual. SHAP values provide the influence of each feature as the change in log-odds of receiving thrombolysis. SHAP values expressed as log-odds are additive, i.e. the final log-odds of receiving thrombolysis is the sum of the base model prediction (the log-odds of receiving thrombolysis before feature influences are considered), and the SHAP values for each feature (which are in turn comprised of the feature's main effect and all of the pairwise interaction effects with each of the other features). 
 
 %For calculation of SHAP values we used the Shap library \cite{lundberg_unified_2017}.
 
