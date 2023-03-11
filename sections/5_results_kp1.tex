@@ -11,7 +11,7 @@ Thrombolysis use in the original data varied between hospitals from 1.5\% to 24.
 The best model with 1, 2, 5, 10, 25 \& all 60 original features had ROC AUCs of 0.715, 0.792, 0.891, 0.919, 0.923 \& 0.922. We selected 10 features for all subsequent work, which were:
 
 \begin{itemize}
-    \item \emph{Arrival-to-scan time}: Time from arrival at hospital to scan (mins)
+    \item \emph{Arrival-to-scan time}: Time from arrival at hospital to scan (minutes)
     \item \emph{Infarction}: Stroke type (1 = infarction, 0 = haemorrhage)
     \item \emph{Stroke severity}: National Institutes of Health Stroke Scale (NIHSS) score on arrival
     \item \emph{Precise onset time}: Onset time (1 = precise, 0 = best estimate)
@@ -22,8 +22,6 @@ The best model with 1, 2, 5, 10, 25 \& all 60 original features had ROC AUCs of 
     \item \emph{Onset during sleep}: Did stroke occur in sleep?
     \item \emph{Age}: Age (as midpoint of 5 year age bands)
 \end{itemize}
-
-These were not necessarily the 10 most important features, as another highly correlated feature may also have been important, but if a feature is highly correlated with an already chosen feature, it will add less additional value.
 
 Correlations between the 10 features were measured using coefficients of determination (r-squared). All r-squared were less than 0.05 except a) age and prior disability level (r-squared 0.146), and b) onset during sleep and precise onset time (r-squared 0.078).
 
@@ -62,8 +60,8 @@ Figure \ref{fig:shap_feature_subfigure} shows the relationship between patient l
     \item \emph{Stroke onset time type (precise vs. estimated)}: The odds of receiving thrombolysis were about 3 fold greater for precise onset time than estimated onset time.
     \item \emph{Disability level (mRS) before stroke}: The odds of receiving thrombolysis fell about 6 fold between mRS 0 and 5.
     \item \emph{Use of AF anticoagulants}: The odds of receiving thrombolysis were about 5 fold greater for no use.
-    \item \emph{Onset-to-arrival time}: The odds of receiving thrombolysis were similar below 120 minutes, then fell about 3 fold above 120.
-    \item \emph{Age}: The odds of receiving thrombolysis were similar below 80 years old, then fell about 1.8 fold between 80 and 110 years old.    
+    \item \emph{Onset-to-arrival time}: The odds of receiving thrombolysis were similar below 120 minutes, then fell about 3 fold between 120 and 240 minutes.
+    \item \emph{Age}: The odds of receiving thrombolysis were similar below 80 years old, then fell about 2 fold between 80 and 110 years old.    
     \item \emph{Onset during sleep}: The odds of receiving thrombolysis were about 4 fold lower for onset during sleep.
     \item \emph{Hospital attended}: There was a 13 fold difference in odds of receiving thrombolysis between hospitals.
 \end{itemize}
@@ -72,14 +70,14 @@ In summary the most thrombolysable patients have:
 \begin{itemize}
     \item an infarction stroke type
     \item shorter arrival-to-scan times
-    \item moderate to severe stroke severity with NIHSS 5-25
+    \item moderate to severe stroke severity with NIHSS 10-25
     \item a precise onset time
     \item lower pre-stroke disability
     \item were not taking anticoagulant medication
     \item shorter onset-to-arrival times
     \item were younger
     \item did not have onset during sleep
-    \item a better chance of receiving thrombolysis at certain hospitals
+    \item attend a hospital with a high predisposition to use thrombolysis
 \end{itemize}
 %\newpage
 
@@ -133,9 +131,9 @@ Using the \emph{10k holdout model}, the predicted use of thrombolysis across the
 
 
 %\newpage
-\subsection{How much of the between-hospital thrombolysis use can be explained by the differences in the hospital processes, and the differences in the patient mix?}%\subsection{How much of the hospitals use of thrombolysis can be explained by the differences in the hospital processes, and the differences in the patient mix}
+\subsection{How much of the between-hospital thrombolysis use can be explained by the differences in the hospital identity and processes, and the differences in the patient mix?}%\subsection{How much of the hospitals use of thrombolysis can be explained by the differences in the hospital processes, and the differences in the patient mix}
 
-Figure \ref{fig:shap_multiple_regression} shows that 35\% (P$<$0.0001) of the variance in observed between-hosptial thrombolysis use can be explained by the patient mix, 72\% (P$<$0.0001) can be explained by hospital processes, and that 94\% (P$<$0.0001) can be explained by the combined information from both patient mix and hospital processes. 
+We predicted thrombolysis use using mean SHAP values for patients attending each hopsital. Figure \ref{fig:shap_multiple_regression} shows that 35\% (P$<$0.0001) of the variance in observed between-hospital thrombolysis use can be explained by the patient mix, 72\% (P$<$0.0001) can be explained by hospital identity and processes, and that 94\% (P$<$0.0001) can be explained by the combined information from both patient mix and hospital features. 
 
 
 \begin{figure}[!h]
@@ -149,7 +147,7 @@ Figure \ref{fig:shap_multiple_regression} shows that 35\% (P$<$0.0001) of the va
 %\newpage
 \subsection{Variation in hospital thrombolysis use for patient subgroups}
 
-Figure \ref{fig:results_boxplot} shows boxplots of observed and predicted use of thrombolysis, broken down by patient subgroup. The nine subgroups of patients with one non-ideal feature (haemorrhagic stroke, arrival-to-scan time 60-90 mins, mild stroke severity, estimated stroke onset time, some pre-stroke disability, use of anticoagulants, onset-to-arrival time 150-180 mins, over 80 years old, and onset during sleep) all had reduced thrombolysis use than the complete patient population, and combining these non-ideal features reduced thrombolysis use further (illustrated by the patient subgroup with a mild stroke severity and an estimated stroke onset time). The observed and predicted thrombolysis use show the same general results, but some small differences existed: 1) The use of thrombolysis in \emph{ideal} patients is a little lower in the observed vs predicted results (mean hospital thrombolysis use = 89\% vs 99\%), 2) The predicted results show a stronger effect of combining non-ideal features, 3) The observed thrombolysis rate shows higher between-hospital variation than the predicted thrombolysis rate. This may be partly explained by the observed thrombolysis rate being based on different patients at each hospital, but may also be partly explained by actual use of thrombolysis being slightly more variable than predicted thrombolysis use (which will follow general hospital patterns, and will not include, for example, between-clinician variation at each hospital).
+Figure \ref{fig:results_boxplot} shows boxplots of observed and predicted use of thrombolysis, broken down by patient subgroup. The nine subgroups of patients with one non-ideal feature (haemorrhagic stroke, arrival-to-scan time 60-90 mins, mild stroke severity, estimated stroke onset time, some pre-stroke disability, use of anticoagulants, onset-to-arrival time 150-180 mins, over 80 years old, and onset during sleep) all had reduced thrombolysis use than the complete patient population, and combining these non-ideal features reduced thrombolysis use further (illustrated by the patient subgroup with a mild stroke severity and an estimated stroke onset time). There was, however, significant variation between hospitals in use of thrombolysis in each of these subgroups. The observed and predicted thrombolysis use show the same general results, but some small differences existed: 1) The use of thrombolysis in \emph{ideal} patients is a little lower in the observed vs predicted results (mean hospital thrombolysis use = 89\% vs 99\%), 2) The predicted results show a stronger effect of combining non-ideal features, 3) The observed thrombolysis rate shows higher between-hospital variation than the predicted thrombolysis rate. This may be partly explained by the observed thrombolysis rate being based on different patients at each hospital, but may also be partly explained by actual use of thrombolysis being slightly more variable than predicted thrombolysis use (which will follow general hospital patterns, and will not include, for example, between-clinician variation at each hospital).
 
 %Figure \ref{fig:results_boxplot} shows a boxplot of observed and predicted use of thrombolysis, broken down by patient subgroup. The nine subgroups of patients with one non-ideal feature (NIHSS $<$5, estimated stroke onset time, pre-stroke mRS $>2$) all had reduced thrombolysis use, and combining these non-ideal features reduced thrombolysis use further. The observed and predicted thrombolysis use show the same general results, but some small differences existed: 1) The use of thrombolysis in \emph{ideal} patients is a little lower in the observed vs predicted results (mean hospital thrombolysis use = 89\% vs 99\%), 2) The predicted results show a stronger effect of combining non-ideal features, 3) The observed thrombolysis rate shows higher between-hospital variation than the predicted thrombolysis rate. This may be partly explained by the observed thrombolysis rate being based on different patients at each hospital, but may also be partly explained by actual use of thrombolysis being slightly more variable than predicted thrombolysis use (which will follow general hospital patterns, and will not include, for example, between-clinician variation at each hospital).
 
