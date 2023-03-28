@@ -17,7 +17,7 @@ Data were retrieved for 246,676 emergency stroke admissions to acute stroke team
 The NHS Health Research Authority decision tool\footnote{http://www.hra-decisiontools.org.uk/research/} was used to confirm that ethical approval was not required to access the data. No identifiable patient or hospital information were provided in the data, and anonymised hospital names were provided. Governance of the data and access to SSNAP was authorised by the Healthcare Quality Improvement Partnership\footnote{https://www.hqip.org.uk/} (HQIP, reference HQIP303). 
 
 \subsection{Machine learning models (to predict thrombolysis use)}
-We used an \emph{eXtreme Gradient Boosting model \cite{chen_xgboost_2016}} (`XGBoost') to predict the probability of use of thrombolysis for each patient from their other feature values.
+We used an \emph{eXtreme Gradient Boosting model \cite{chen_xgboost_2016}} (`XGBoost') to predict the probability of use of thrombolysis for each patient from their other feature values. We chose XGBoost for its efficiency, and because we know we are dealing with a system with non-linear relationships and feature interactions, which XGBoost copes well with.
 
 \subsubsection{Feature selection}
 Before applying SHAP, we aimed to enhance the understandability and explainability of our models through restricting the features (patient level data fields) included in the model. 
@@ -85,24 +85,24 @@ We sought to make our models explainable using SHAP values (calculated using the
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The relationship between feature values and the odds of receiving thrombolysis}
 % notebook 03d
-For each feature, we examined the relationship between feature values and their corresponding SHAP values (we used values from the \emph{all data model}).
+For each feature, we examined the relationship between feature values and their corresponding SHAP values (we used values from the \emph{all data} model).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{How much of the between-hospital thrombolysis use can be explained by the identity of the hospital attended?}%How the hospital SHAP value compares with the hospitals use of thrombolysis}
 
-For each hospital we compared the mean SHAP value for the hospital attended (using values from the \emph{all data model}) with the hospitals observed thrombolysis use. Each hospital has their own patient populations.
+For each hospital we compared the mean SHAP value for the hospital attended (using values from the \emph{all data} model) with the hospitals observed thrombolysis use. Each hospital has their own patient population.
 
-To reveal the variation in thrombolysis rate due to hospital, rather than patient mix, we also compared the mean hospital attended SHAP value for the identical 10k patient cohort attending each hospital, with the hospitals' predicted thrombolysis use for this 10k patient cohort (we used values from the \emph{10k holdout model}).
+To reveal the variation in thrombolysis rate due to hospital, rather than patient mix, we also compared the mean hospital attended SHAP value for the identical 10k patient cohort attending each hospital, with the hospitals' predicted thrombolysis use for this 10k patient cohort (we used values from the \emph{10k holdout} model).
 
 %To provide a more pure \emph{hospital effect} result, we removed the \emph{ patient effect}) by also comparing the hospital SHAP value from the model trained on 78,928 patients and pass all of the 10k patients (that were held back from the training process) though the model, whilst setting the hospital ID to each hospital in turn.
-
+https://www.overleaf.com/project/63f61a01afba613ac81702c6
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{How much of the between-hospital thrombolysis use can be explained by the differences in the hospital processes, and the differences in the patient populations?}%How much of the hospitals use of thrombolysis can be explained by the differences in the hospital processes, and the differences in the patient mix
+\subsection{How much of the between-hospital thrombolysis use can be explained by the differences in the hospital identity and processes, and the differences in the patient populations?}%How much of the hospitals use of thrombolysis cahttps://www.overleaf.com/project/63f61a01afba613ac81702c6n be explained by the https://www.overleaf.com/project/63f61a01afba613ac81702c6differences in the hospital processes, and the differences in the patient mix
 
 %This section takes a more refined approach at attributing the contribution of hospital thrombolysis use variation between the difference in the hospitals and the difference in the patients mix. 
 
-Hospital SHAP values are comprised of the attended hospital's main effect and the sum of its interactions with all other features. This includes interactions with the features that describe the patient, which could allow for possible leakage of patient information into the hospital attended SHAP value. We may further isolate the effect of the hospital or patients by including only the interactions with other related features.
+Hospital attended SHAP values are comprised of the attended hospital's main effect and the sum of its interactions with all other features. This includes interactions with the features that describe the patient, which could allow for possible leakage of patient information into the hospital attended SHAP value. We may further isolate the effect of the hospital or patients by including only the interactions with other related features.
 
 The 10 features in the model can be classified into two subsets: 1) `patient descriptive features' (features that describe the patients characteristics), and 2) `hospital descriptive features' (features that describe the hospital’s identity or process). We calculated the `subset SHAP value' for each feature by only including the components of its SHAP value that contain effects from the features in the same subset. This is expressed as the sum of the main effect and the interaction effects with the other features in the same subset. For each subset of features (hospital, or patient) we fitted a multiple regression to predict the hospitals observed thrombolysis rate from the mean subset SHAP value of each feature, for patients attending each hospital (using values from the \emph{all data} model). We fitted a multiple regression using the subset SHAP value for all 10 features (both hospital and patient descriptive features). For this analysis, we only included the single one-hot encoded feature for the attended hospital. 
 
@@ -127,7 +127,7 @@ We analysed the observed and predicted use of thrombolysis in four subgroups of 
     \item Stroke caused by infarction
     \item Precise stroke onset time known
     \item No pre-stroke disability (mRS 0)
-    \item Not taking of atrial fibrillation anticoagulants
+    \item Not taking atrial fibrillation anticoagulants
     \item Short onset-to-arrival time (less than 90 minutes)
     \item Younger than 80 years old
     \item Onset not during sleep
@@ -137,17 +137,17 @@ We analysed the observed and predicted use of thrombolysis in four subgroups of 
   \item Patients with pre-stroke disability (mRS greater than 2)
 \end{enumerate}
 
-The observed thrombolysis use at each hospital was taken from the SSNAP dataset, with data limited to the patients that matched the patient characteristics and attending each hospital (and so the patient mix was different for each hospital).
+The observed thrombolysis use at each hospital was taken from the SSNAP dataset, with data limited to the patients that matched the patient characteristics and attending each hospital (and so the patient population was different for each hospital).
 
-In order to reveal the variation in thrombolysis that was due to hospital processes and decision-making we predicted thrombolysis use for the same patient mix at each hospital by using the \emph{10k holdout model}.
+In order to reveal the variation in thrombolysis that was due to hospital processes and decision-making we predicted thrombolysis use for the same patient mix at each hospital by using the \emph{10k holdout} model.
 \fi
 
-Informed by the SHAP values, we analysed the observed and predicted use of thrombolysis in eleven subgroups of patients: one `ideally' thrombolysable patient, nine `sub-optimal' thrombolysable patient subgroups (one subgroup per feature), and one subgroup with two sub-optimal features. We based the ideal definition on observing the relationships between feature values and thrombolysis use, and for each `sub optimal' subgroup we chose the feature value that's within the contentious range for thrombolysis use decision making (this is either a feature value that corresponds with a SHAP value of zero, or the least favourable value for binary features). The eleven patient subgroups are defined as:
+Informed by the SHAP values, we analysed the observed and predicted use of thrombolysis in eleven subgroups of patients: one `ideally' thrombolysable patient, nine `sub-optimal' thrombolysable patient subgroups (one subgroup per feature), and one subgroup with two sub-optimal features. We based the ideally thrombolysable definition on observing the relationships between feature values and thrombolysis use, and for each `sub optimal' subgroup we chose the feature value that is less desirable for choosing to use thrombolysis (this is either a feature value that corresponds with a SHAP value of zero, or the least favourable value for binary features). The eleven patient subgroups are defined as:
 
 % (selecting patients based on one feature set to a sub-optimal value)
 
 \iffalse
-We analysed the observed and predicted use of thrombolysis in subgroups of patients. One `ideally' thrombolysable patient, and nine (one per feature) 'sub-optimal' thrombolysable patient groups (selecting patients based on one feature set to a sub-optimal value). We based the ideal definition on observing the relationships between feature values and thrombolysis use, and chose the 'sub-optimal' feature value by choosing a value that's within the contentious range for decision making (a feature value that corresponds with a SHAP value of zero, or the least favourable for binary features). The ten sub-groups are defined as:
+We analysed the observed and predicted use of thrombolysis in subgroups of patients. One `ideally' thrombolysable patient, and nine (one per feature) `sub-optimal' thrombolysable patient groups (selecting patients based on one feature set to a sub-optimal value). We based the ideal definition on observing the relationships between feature values and thrombolysis use, and chose the 'sub-optimal' feature value by choosing a value that's within the contentious range for decision making (a feature value that corresponds with a SHAP value of zero, or the least favourable for binary features). The ten sub-groups are defined as:
 \fi
 
 \begin{enumerate}
@@ -158,7 +158,7 @@ We analysed the observed and predicted use of thrombolysis in subgroups of patie
     \item Stroke caused by infarction
     \item Precise stroke onset time known
     \item No pre-stroke disability (mRS 0)
-    \item Not taking any atrial fibrillation anticoagulants
+    \item Not taking atrial fibrillation anticoagulants
     \item Short onset-to-arrival time (less than 90 minutes)
     \item Younger than 80 years old
     \item Onset not during sleep
@@ -175,9 +175,9 @@ We analysed the observed and predicted use of thrombolysis in subgroups of patie
   \item Patients with a mild stroke severity (NIHSS less than 5) and with estimated stroke onset time
 \end{enumerate}
 
-The observed thrombolysis use at each hospital was taken from the SSNAP dataset, with data limited to the patients that matched the patient characteristics and attending each hospital (and so the patient mix was different for each hospital).
+The observed thrombolysis use at each hospital was taken from the SSNAP dataset, with data limited to the patients that matched the patient characteristics and attending each hospital (and so the patient population was different for each hospital).
 
-In order to reveal the variation in thrombolysis that was due to hospital decision-making we predicted thrombolysis use for the same patient mix at each hospital by using the \emph{10k holdout model}.
+In order to reveal the variation in thrombolysis that was due to hospital decision-making we predicted thrombolysis use for the same patient mix at each hospital by using the \emph{10k holdout} model.
 
 
 

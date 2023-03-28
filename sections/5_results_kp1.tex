@@ -66,19 +66,7 @@ Figure \ref{fig:shap_feature_subfigure} shows the relationship between patient l
     \item \emph{Hospital attended}: There was a 13 fold difference in odds of receiving thrombolysis between hospitals.
 \end{itemize}
 
-In summary the most thrombolysable patients have:
-\begin{itemize}
-    \item an infarction stroke type
-    \item shorter arrival-to-scan times
-    \item moderate to severe stroke severity with NIHSS 10-25
-    \item a precise onset time
-    \item lower pre-stroke disability
-    \item were not taking anticoagulant medication
-    \item shorter onset-to-arrival times
-    \item were younger
-    \item did not have onset during sleep
-    \item attend a hospital with a high predisposition to use thrombolysis
-\end{itemize}
+In summary the most thrombolysable patients have: an infarction stroke type; shorter arrival-to-scan times; moderate to severe stroke severity with NIHSS 10-25; a precise onset time; lower pre-stroke disability; were not taking anticoagulant medication; shorter onset-to-arrival times; were younger; did not have onset during sleep; attend a hospital with a high predisposition to use thrombolysis.
 %\newpage
 
 \begin{figure}%[!h]
@@ -101,7 +89,7 @@ In summary the most thrombolysable patients have:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\newpage
-\subsection{How much of the between-hospital thrombolysis use can be explained by the hospital attended?}
+\subsection{How much of the between-hospital thrombolysis use can be explained by the identity of the hospital attended?}
 %\subsection{How the hospital SHAP value compares with the hospitals use of thrombolysis}
 
 The mean hospital attended SHAP value correlated with the observed hospital thrombolysis rate with an r-squared of 0.582 (figure \ref{fig:shap_correlation_subfigure_a}), suggesting that 58\% (P$<$0.0001) of the between-hospital variance in thrombolysis use may be explained by the attended hospitals' SHAP values, i.e. the hospitals' predisposition and/or preparedness to use thrombolysis. % KP DON'T THINK WANT THIS HERE NOW HAVE THE OTHER BELOW? By comparison, only four of the patient features had an r-squared greater than 0.1, P$<$0.0001 (infarction 0.448, arrival-to-scan time 0.273, anticoagulants 0.213, stroke severity 0.153), and with a maximum of 45\% of the between-hospital variance in thrombolysis use being explained by a single patient feature (infarction).
@@ -131,9 +119,9 @@ Using the \emph{10k holdout model}, the predicted use of thrombolysis across the
 
 
 %\newpage
-\subsection{How much of the between-hospital thrombolysis use can be explained by the differences in the hospital identity and processes, and the differences in the patient mix?}%\subsection{How much of the hospitals use of thrombolysis can be explained by the differences in the hospital processes, and the differences in the patient mix}
+\subsection{How much of the between-hospital thrombolysis use can be explained by the differences in the hospital identity and processes, and the differences in the patient populations?}%\subsection{How much of the hospitals use of thrombolysis can be explained by the differences in the hospital processes, and the differences in the patient mix}
 
-We predicted thrombolysis use using mean SHAP values for patients attending each hopsital. Figure \ref{fig:shap_multiple_regression} shows that 35\% (P$<$0.0001) of the variance in observed between-hospital thrombolysis use can be explained by the patient mix, 72\% (P$<$0.0001) can be explained by hospital identity and processes, and that 94\% (P$<$0.0001) can be explained by the combined information from both patient mix and hospital features. 
+We predicted thrombolysis use using mean SHAP values for patients attending each hospital. Figure \ref{fig:shap_multiple_regression} shows that 35\% (P$<$0.0001) of the variance in observed between-hospital thrombolysis use can be explained by the patient population, 72\% (P$<$0.0001) can be explained by hospital identity and processes, and that 94\% (P$<$0.0001) can be explained by the combined information from both the patient population and hospital identity and processes. 
 
 
 \begin{figure}[!h]
