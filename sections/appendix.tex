@@ -497,7 +497,7 @@ Balanced sensitivity/specificity & 0.839 & 0.003\tabularnewline
 \end{longtable}
 \end{minipage}
 
-We found an overall accuracy of 85/%, with a balanced accuracy. The predicted thrombolysis rate of 29.4/% was very close to the observed thrombolysis rate of 29.6/%.
+We found an overall accuracy of 85.0\%, with a balanced accuracy. The predicted thrombolysis rate of 29.4\% was very close to the observed thrombolysis rate of 29.6\%.
 
 Figure \ref{fig:roc} shows the receiver operating characteristic curve, along with the trade-off between sensitivity and specificity.
 
@@ -513,7 +513,7 @@ Figure \ref{fig:roc} shows the receiver operating characteristic curve, along wi
 
 \subsection{Validation of hospital thrombolysis use}
 
-With k-fold validation, every instance is in one, but only one, test set. The test sets may therefore be combined to have predictions for the whole data set. Using these collated results we compared predicted thrombolysis use at each hospital with the actual (observed) thrombolysis use (figure \ref{fig:thrombolysis_pred_observed}. There was very good agreement between predicted and observed thrombolysis use at each hospital (r-squared 0.977).
+With k-fold validation, every instance is in one, but only one, test set. The test sets may therefore be combined to have predictions for the whole data set. Using these collated results we compared predicted thrombolysis use at each hospital with the actual (observed) thrombolysis use (figure \ref{fig:thrombolysis_pred_observed}). There was very good agreement between predicted and observed thrombolysis use at each hospital (r-squared 0.977).
 
 \begin{figure}
 \centering
@@ -527,7 +527,7 @@ With k-fold validation, every instance is in one, but only one, test set. The te
 
 \subsection{Model calibration}
 
-The model calibration was checked by binning predictions by probability, and comparing the mean predicted probability with the fraction that were actually positive (table \ref{tab:calibration} and figure \ref{fig:calibration}). In a well-calibrated model, in each bin the average probability of receiving thrombolysis should be close to the proportion of patients who actually received thrombolysis. Results demonstrated that the model was naturally well-calibrated, and was not in need of any calibration correction. As expected, the fraction of predictions that were correct is related to the predicted probability of receiving thrombolysis (when predictions were close to 50\% probability of receiving thrombolysis the model was correct about 50\% of the time, whereas when the model had predictions of <10\% or >90\% probability of receiving thrombolysis, the model was be correct about 90\% of the time).
+The model calibration was checked by binning predictions by probability, and comparing the mean predicted probability with the fraction that were actually positive (table \ref{tab:calibration} and figure \ref{fig:calibration}). In a well-calibrated model, in each bin the average probability of receiving thrombolysis should be close to the proportion of patients who actually received thrombolysis. Results demonstrated that the model was naturally well-calibrated, and was not in need of any calibration correction. As expected, the fraction of predictions that were correct is related to the predicted probability of receiving thrombolysis (when predictions were close to 50\% probability of receiving thrombolysis the model was correct about 50\% of the time, whereas when the model had predictions of less than 10\% or greater than 90\% probability of receiving thrombolysis, the model was be correct about 90\% of the time).
 
 Nearly 50\% of patients fell in the 0-10\% probability of receiving thrombolysis - that is the model gave a confident prediction that the these patients would not receive thrombolysis, with the model being correct in these predictions 98\% of the time.
 
@@ -567,7 +567,7 @@ Frequency\tabularnewline
 
 \subsection{Evaluating variation in model predictions and predicted 10k cohort thrombolysis rate using bootstrap models}
 
-Data was split into a training set of 78,928 patients, and a test set of 10k patients. 30 models were trained, each with a different bootstrap sample of the training set and with a different model random seed. For each of the 10k test set, we evaluated the variation in the predicted probability of receiving thrombolysis (figure \ref{fig:bootstrap_1}. The mean of these standard deviations was 0.057, but the variation depended on the probability, with variation peaking at about 0.13 when the prediction probability of receiving thrombolysis was around 0.5.
+Data was split into a training set of 78,928 patients, and a test set of 10k patients. 30 models were trained, each with a different bootstrap sample of the training set and with a different model random seed. For each of the 10k test set, we evaluated the variation in the predicted probability of receiving thrombolysis (figure \ref{fig:bootstrap_1}). The mean of these standard deviations was 0.057, but the variation depended on the probability, with variation peaking at about 0.13 when the prediction probability of receiving thrombolysis was around 0.5.
 
 \begin{figure}
 \centering

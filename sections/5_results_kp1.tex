@@ -54,9 +54,9 @@ SHAP values are presented as how they affect log odds of receiving thrombolysis,
 Figure \ref{fig:shap_feature_subfigure} shows the relationship between patient level feature values and their SHAP values. Key observations are (with SHAP influence converted from log-odds to odds):
 
 \begin{itemize}
-    \item \emph{Stroke type}: The SHAP values for stroke type show that the model effectively eliminated any probability of receiving thrombolysis for non-ischaemic (haemorrhagic) stroke, with the odds of receiving thrombolysis fell by over 7,000 fold.
+    \item \emph{Stroke type}: The SHAP values for stroke type show that the model effectively eliminated any probability of receiving thrombolysis for non-ischaemic (haemorrhagic) stroke, with the odds of receiving thrombolysis fell by over 6,000 fold.
     \item \emph{Arrival-to-scan time}: The odds of receiving thrombolysis reduced by about 9 fold over the first 120 minutes of arrival to scan time.
-    \item \emph{Stroke severity (NIHSS)}: The odds of receiving thrombolysis were lowest at NIHSS 0, increased and peaked at NIHSS 15-25, and then fell again with higher stroke severity (NIHSS above 25). The difference between minimum odds (at NIHSS 0) and maximum odds (at 15-25) of receiving thrombolysis was about 30 fold.
+    \item \emph{Stroke severity (NIHSS)}: The odds of receiving thrombolysis were lowest at NIHSS 0, increased and peaked at NIHSS 15-25, and then fell again with higher stroke severity (NIHSS above 25). The difference between minimum odds (at NIHSS 0) and maximum odds (at 15-25) of receiving thrombolysis was 25-30 fold.
     \item \emph{Stroke onset time type (precise vs. estimated)}: The odds of receiving thrombolysis were about 3 fold greater for precise onset time than estimated onset time.
     \item \emph{Disability level (mRS) before stroke}: The odds of receiving thrombolysis fell about 6 fold between mRS 0 and 5.
     \item \emph{Use of AF anticoagulants}: The odds of receiving thrombolysis were about 5 fold greater for no use.
@@ -73,13 +73,13 @@ In summary the most thrombolysable patients have: an infarction stroke type; sho
 \centering
 \begin{subfigure}{.9\textwidth}
   \centering
-    \includegraphics[width=1.\textwidth]{./images/03d_xgb_10_features_thrombolysis_shap_violin_all_features}
+    \includegraphics[width=1.\textwidth]{./images/03a_xgb_10_features_thrombolysis_shap_violin_all_features}
     \caption{}
   \label{fig:shap_feature_subfigure_a}
 \end{subfigure}
 \begin{subfigure}{.9\textwidth}
   \centering
-    \includegraphics[width=1.\textwidth]{./images/03d_xgb_10_features_hosp_shap_hist}
+    \includegraphics[width=1.\textwidth]{./images/03a_xgb_10_features_hosp_shap_hist}
     \caption{}
   \label{fig:shap_feature_subfigure_b}
 \end{subfigure}
@@ -101,7 +101,7 @@ Using the \emph{10k holdout model}, the predicted use of thrombolysis across the
 \centering
 \begin{subfigure}{.49\textwidth}
   \centering
-    \includegraphics[width=0.9\textwidth]{./images/03c_xgb_10_features_attended_hosp_shap_value}
+    \includegraphics[width=0.9\textwidth]{./images/03b_xgb_10_features_attended_hosp_shap_vs_ivt_rate}
     \caption{}
   \label{fig:shap_correlation_subfigure_a}
 \end{subfigure}
@@ -126,7 +126,7 @@ We predicted thrombolysis use using mean SHAP values for patients attending each
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.9\textwidth]{./images/03e_xgb_10_features_multiple_regression_patient_hosptial}
+    \includegraphics[width=0.9\textwidth]{./images/03f_xgb_10_features_multiple_regression_patient_hosptial}
     \caption{Multiple regression of subset SHAP values (mean of patients attending hospital) with hospital observed thrombolysis rate. LHS: Subset SHAP values for the eight patient descriptive features (age, stroke severity, prior disability, onset-to-arrival time, stroke type, type of onset time, anticoagulants, and onset during sleep). Middle: Subset SHAP values for the two hospital descriptive features (arrival-to-scan time, and hospital attended). RHS: Subset SHAP values for all 10 features (for both hospital and patient descriptive features).}
   \label{fig:shap_multiple_regression}
 \end{figure}
