@@ -107,7 +107,7 @@ Using the \emph{10k holdout model}, the predicted use of thrombolysis across the
 \end{subfigure}
 \begin{subfigure}{.49\textwidth}
   \centering
-    \includegraphics[width=0.9\textwidth]{./images/04_xgb_10_features_10k_cohort_attended_hosp_shap_value}
+    \includegraphics[width=0.9\textwidth]{./images/04a_xgb_10_features_10k_cohort_attended_hosp_shap_value_vs_ivt_rate}
     \caption{}
   \label{fig:shap_correlation_subfigure_b}
 \end{subfigure}
@@ -126,7 +126,7 @@ We predicted thrombolysis use using mean SHAP values for patients attending each
 
 \begin{figure}[!h]
     \centering
-    \includegraphics[width=0.9\textwidth]{./images/03f_xgb_10_features_multiple_regression_patient_hosptial}
+    \includegraphics[width=0.9\textwidth]{./images/03f_xgb_10_features_multiple_regression_patient_hospital}
     \caption{Multiple regression of subset SHAP values (mean of patients attending hospital) with hospital observed thrombolysis rate. LHS: Subset SHAP values for the eight patient descriptive features (age, stroke severity, prior disability, onset-to-arrival time, stroke type, type of onset time, anticoagulants, and onset during sleep). Middle: Subset SHAP values for the two hospital descriptive features (arrival-to-scan time, and hospital attended). RHS: Subset SHAP values for all 10 features (for both hospital and patient descriptive features).}
   \label{fig:shap_multiple_regression}
 \end{figure}
@@ -143,7 +143,7 @@ Figure \ref{fig:results_boxplot} shows boxplots of observed and predicted use of
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=1\textwidth]{./images/15a_xgb_10_features_10k_cohort_actual_vs_modelled_subgroup_boxplot}
+\includegraphics[width=1\textwidth]{./images/04c_xgb_10_features_10k_cohort_actual_vs_modelled_subgroup_boxplot}
 %{./images/15a_actual_vs_modelled_subgroup_violin}
 \caption{Boxplot for either observed (top) or predicted (bottom) use of thrombolysis for subgroups of patients. The `ideal patients' subgroup has a mid-level stroke severity (NIHSS in range 10-25), short arrival-to-scan time (less than 30 minutes), stroke caused by infarction, precise stroke onset time known, no pre-stroke disability (mRS 0), not taking any atrial fibrillation anticoagulants, short onset-to-arrival time (less than 90 minutes), younger than 80 years old, and onset not during sleep. The single features are ordered in ranked feature importance (using the mean absolute SHAP value across all instances). }
 \label{fig:results_boxplot}
