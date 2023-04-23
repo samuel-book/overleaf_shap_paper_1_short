@@ -1,6 +1,10 @@
 \appendix
 \section{Appendix}
 
+% Use numbering specific to the appendix.
+\renewcommand{\thefigure}{\thesection.\arabic{figure}}
+\renewcommand{\thetable}{\thesection.\arabic{table}}
+
 This work is licensed under a Creative Commons \ccby{3.0} license.
 
 \subsection{Data}
@@ -206,7 +210,7 @@ range of Shap values that we will see in our models.
 \subsubsection{Probability}
 
 We will take the example that Shap reports that a model's base
-probability prediction, before the contribution of features is 0.25, or
+probability prediction, before consideration of features is 0.25, or
 a 25\% probability of receiving thrombolysis; that is 1 in 4 patients
 with this prediction would be expected to receive thrombolysis.
 
@@ -214,12 +218,12 @@ with this prediction would be expected to receive thrombolysis.
 
 \emph{Probability} expresses the chance of something happening as the
 number of positive occurrences as a fraction of all occurrences
-(i.e.~the number of patients receiving thrombolysis as a fraction of the
+(i.e. the number of patients receiving thrombolysis as a fraction of the
 total number of patients).
 
 \emph{Odds} express the chance of something happening as the ratio of
-the number of positive occurrences (i.e.~receiving thrombolysis) to the
-number of negative occurrences (i.e.~\emph{not} receiving thrombolysis).
+the number of positive occurrences (i.e. receiving thrombolysis) to the
+number of negative occurrences (i.e. \emph{not} receiving thrombolysis).
 
 If we have probability prediction of 0.25 would receive thrombolysis,
 that would mean 1 in 4 of those patients receive thrombolysis. Expressed
@@ -274,7 +278,7 @@ SHAP (log odds) & Shift in odds (multiply original odds)\tabularnewline
 \end{longtable}
 \end{minipage}
 
-\emph{Positive Shap values: worked example}
+\emph{Positive Shap values: a worked example}
 
 Now let us work through an example of starting with a known baseline
 \emph{probability} (before we consider what we know about a particular
@@ -311,7 +315,7 @@ probability of that patient receiving thrombolysis from 25\% to 36\%. A
 Shap value of 5 for the same feature would shift the probability of that
 patient receiving thrombolysis up to 98\%.
 
-\emph{Negative Shap values: worked example}
+\emph{Negative Shap values: a worked example}
 
 If we have a negative Shap value then odds are reduced (a Shap of -1
 will lead to the odds being divided by 2.72, which is the same as
@@ -370,7 +374,12 @@ Thrombolysis use in the original data varied between hospitals (Figure \ref{fig:
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Machine learning methods}
 
-All work was conducted in Python (v3.8). All code is available at: \url{https://github.com/samuel-book/samuel_shap_paper_1}.
+All work was conducted in Python (v3.8). All code is available at: 
+
+\begin{enumerate}
+    \item GitHub repository: \url{https://github.com/samuel-book/samuel_shap_paper_1} (Release 3.0.0; DOI: 10.5281/zenodo.7856495)
+    \item Jupyter book: \url{https://samuel-book.github.io/samuel_shap_paper_1/}
+\end{enumerate}
 
 Our machine learning model used XGBoost (\emph{eXtreme Gradient Boosting}, v1.5, \url{https://pypi.org/project/xgboost/}). We used default settings apart from *learning rate* was set at 0.5 (see section \ref{sec:fine_tune}).
 
@@ -413,7 +422,6 @@ The 10 features selected (Figure \ref{fig:feature_selection}) were:
 
 
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Correlations within the 10 selected features}
@@ -421,6 +429,7 @@ The 10 features selected (Figure \ref{fig:feature_selection}) were:
 Correlations between the 10 features were measured using coefficients of determination (r-squared). All r-squared were less than 0.15, and all r-squared were less than 0.05 except 1) age and prior disability level (r-squared 0.146), and 2) onset during sleep and precise onset time (r-squared 0.078). All correlations are shown in table \ref{tab:correl}.
 
 
+    
 \begin{longtable}[]{@{}rrr@{}}
 \caption{Correlations between the 10 features selected for the XGBoost machine learning model.}\\
 \toprule
@@ -467,6 +476,7 @@ Prior disability level & Infarction & 0.0000\tabularnewline
 \bottomrule
 \label{tab:correl}
 \end{longtable}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
