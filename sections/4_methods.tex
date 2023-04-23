@@ -4,31 +4,35 @@
 
 All modelling and analysis was performed using Python in Jupyter Notebooks \cite{kluyver_jupyter_2016}, with general analysis and plotting performed using NumPy \cite{harris_array_2020}, Pandas \cite{mckinney-proc-scipy-2010}, Scikit-Learn  \cite{pedregosa_scikit-learn_2011}, and Matplotlib \cite{hunter_matplotlib_2007}. 
 
-Further details of methods may also be found in the supplementary material. 
+Further details of methods may also be found in the appendix. 
 
-All code, with detailed results, used is available online at \url{https://samuel-book.github.io/samuel_shap_paper_1/} (DOI: 10.5281/zenodo.7540391). 
+All code, with detailed results, used is available online as a Jupuyter book at \url{https://samuel-book.github.io/samuel_shap_paper_1/} and available on GitHub at \url{https://github.com/samuel-book/samuel_shap_paper_1} (DOI: 10.5281/zenodo.7856495). 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Data}
 
-Data were retrieved for 246,676 emergency stroke admissions to acute stroke teams in England and Wales for the three calendar years 2016 - 2018, obtained from the Sentinel Stroke National Audit Programme\footnote{https://www.strokeaudit.org/} (SSNAP). Data fields were provided for the hyper-acute phase of the stroke pathway, up to and including our target feature: \emph{receive thrombolysis} (full details of the data fields obtained are provided in the appendix). Of these patients, 88,928 arrived within 4 hours of known (precise or estimated) stroke onset, and were used in this modelling study (as they represent the patients that had time left to treat). The data included 132 acute stroke hospitals (these were all units admitting an average of 100 patients per year, and delivering thrombolysis to at least 10 patients over 3 years). For modelling purposes, the categorical feature \emph{Stroke team} in the SSNAP dataset was represented as 132 one-hot encoded features (a separate feature for each hospital). One-hot encoding is a process which converts a categorical feature to a numerical form. There are 60 original features in the SSNAP dataset (before one-hot encoding categorical features).
+Data were retrieved for 246,676 emergency stroke admissions to acute stroke teams in England and Wales for the three calendar years 2016 - 2018, obtained from the Sentinel Stroke National Audit Programme\footnote{https://www.strokeaudit.org/} (SSNAP). Data fields were provided for the hyper-acute phase of the stroke pathway, up to and including our target feature: \emph{receive thrombolysis} (full details of the data fields obtained are provided in the appendix). Of these patients, 88,928 arrived within 4 hours of known (precise or estimated) stroke onset, and were used in this modelling study (as they represent the patients that had time left to receive thrombolysis). The data included 132 acute stroke hospitals (these were all units admitting an average of 100 patients per year, and delivering thrombolysis to at least 10 patients over 3 years). For modelling purposes, the categorical feature \emph{Stroke team} in the SSNAP dataset was represented as 132 one-hot encoded features (a separate feature for each hospital). One-hot encoding is a process which converts a categorical feature to a numerical form. There are 60 original features used from the SSNAP dataset (before one-hot encoding categorical features).
 
  SSNAP has near-complete coverage of all acute stroke admissions in the UK (outside Scotland). All hospitals admitting acute stroke participate in the audit, and year-on-year comparison with Hospital Episode Statistics\footnote{https://digital.nhs.uk/data-and-information/data-tools-and-services/data-services/hospital-episode-statistics} confirms estimated case ascertainment of 95\% of coded cases of acute stroke.
 
-The NHS Health Research Authority decision tool\footnote{http://www.hra-decisiontools.org.uk/research/} was used to confirm that ethical approval was not required to access the data. No identifiable patient or hospital information were provided in the data, and anonymised hospital names were provided. Governance of the data and access to SSNAP was authorised by the Healthcare Quality Improvement Partnership\footnote{https://www.hqip.org.uk/} (HQIP, reference HQIP303). 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsection{Machine learning models (to predict thrombolysis use)}
-We used an \emph{eXtreme Gradient Boosting model \cite{chen_xgboost_2016}} (`XGBoost') to predict the probability of use of thrombolysis for each patient from their other feature values. We chose XGBoost for its efficiency, and because we know we are dealing with a system with non-linear relationships and feature interactions, which XGBoost copes well with.
+We used an \emph{eXtreme Gradient Boosting model \cite{chen_xgboost_2016}} (`XGBoost') to predict the probability of use of thrombolysis for each patient from their other feature values. We chose XGBoost for its efficiency, and because we working with a system with known non-linear relationships and potential feature interactions.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Feature selection}
 Before applying SHAP, we aimed to enhance the understandability and explainability of our models through restricting the features (patient level data fields) included in the model. 
-% In order to provide a more understandable and explainable machine learning model, we restricted the features (patient characteristics) that were used in the model to those that provided the most information regarding use of thrombolysis. 
 
 Features were selected one at a time from the 60 original features in the SSNAP dataset by forward-feature selection \cite{ferri_comparative_1994} (identifying one feature at a time that led to the greatest improvement in accuracy). Model accuracy was measured by Receiver Operating Characteristic (ROC) Area Under Curve (AUC), using 5-fold cross-validation. We repeated this process to identify the top 25 features, and used these results to identify the number of features to include in our machine learning models (based on the observed diminishing returns).
 
-%In order to provide a more explainable machine learning model, the features (patient characteristics) were restricted to those that provided the most information regarding use of thrombolysis. Using forward sequential feature selection (identifying one feature at a time that led to greatest improvement in ROC AUC to form a feature subset in a greedy fashion, with ROC AUC measured using stratified 5-fold cross validation), we selected the top 25 features.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{Model accuracy}
 Model accuracy, ROC AUC, sensitivity and specificity were measured using stratified 5-fold cross validation. The appendix contains further model accuracy analysis (including patient subgroup analysis).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \subsubsection{The machine learning models}
 
@@ -38,7 +42,8 @@ For the different analysis included in this paper, we trained three XGBoost mode
     
     Description: Train/test five models using all 88,928 patients in a 5-fold cross-validation.
     
-    Purpose: To robustly test the accuracy of the model, and to test reproducibility of SHAP values across the five k-fold models.% Also, the combined test-set results was used for selection of the most thrombolysable patient at each hospital.
+    Purpose: To robustly test the accuracy of the model, and to test reproducibility of SHAP values across the five k-fold models.
+    
     \item {\emph{All data model}}
     
     Description: Train a single model using all 88,928 patients.
@@ -53,106 +58,44 @@ For the different analysis included in this paper, we trained three XGBoost mode
 \end{enumerate}
 
 For all models, a single model was fitted for all hospitals, with hospital attended being a feature (represented as a one-hot encoded feature).
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\iffalse
-\subsection{Characteristics of the most thrombolysable patient (at each hospital)}
-We identified the patient at each hospital that the model predicted had the highest probability of receiving thrombolysis (using the combined test-set results from the \emph{k-fold model}), and compared the feature values of those 132 patients to:
-\begin{itemize}
-\item All patients
-\item All patients who had received thrombolysis
-\item All patients who had not received thrombolysis
-\end{itemize}
-\fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\subsection{Waterfall plots of SHAP values}
 \subsection{SHapley Additive exPlanation (SHAP) values}
 
-We sought to make our models explainable using SHAP values (calculated using the SHAP library \cite{lundberg_unified_2017}). SHAP provides a measure of the contribution of each feature value to the final predicted probability of receiving thrombolysis for that individual. SHAP values provide the influence of each feature as the change in log-odds of receiving thrombolysis. SHAP values expressed as log-odds are additive, i.e. the final log-odds of receiving thrombolysis is the sum of the base model prediction (the log-odds of receiving thrombolysis before feature influences are considered), and the SHAP values for each feature (which are in turn comprised of the feature's main effect and all of the pairwise interaction effects with each of the other features). 
-
-% 1) \cite{Christos Kokkotis} \cite{A. Papadopoulou}
-
-%We sought to make our models explainable using SHAP values (calculated using the SHAP library \cite{lundberg_unified_2017}). Machine learning and SHAP have been applied to various other areas of stroke research, to gain insights into the factors that contribute to predicting stroke risk \cite{Christos Kokkotis} \cite{Junjie Liu}, diagnosing stroke from medical images, developing treatment strategies, and analysing outcomes \cite{Po-Yuan Su 2022} \cite{Xiaohan Zheng} \cite{Seong-Hwan Kim}.
-
-
-%SHAP has been used elsewhere in stroke, focusing on understanding models that are predicting a stroke \cite{Christos Kokkotis}, predicting early outcomes of stroke \cite{Po-Yuan Su 2022}, risk prediction for poststroke AF \cite{Xiaohan Zheng}, identifying the main risk factors causing stroke \cite{Junjie Liu}, predicting if a patient is having a stroke \cite{Yulu Zheng}, and predicting early neurological deterioration for atrial fibrillation (AF)-related stroke \cite{Seong-Hwan Kim}.
-
-%to transform machine learning predictions of influential factors of early outcomes in acute ischaemic stroke into clinically meaningful results \cite{Po-Yuan Su 2022}, and to investigate the impact of the risk factors on the prediction for stroke \cite{Christos Kokkotis} .... do x y and z (cite) \kpFIXME{Do some SHAP stroke reading}. 
-
-%For calculation of SHAP values we used the Shap library \cite{lundberg_unified_2017}.
+We sought to make our models explainable using SHAP values (calculated using the SHAP library \cite{lundberg_unified_2017}). SHAP provides a measure of the contribution of each feature value to the final predicted probability of receiving thrombolysis for that individual. The SHAP values for each feature are comprised of the feature’s main effect (the effect of that feature in isolation) and all of the pairwise interaction effects with each of the other features (a value per feature pairing). SHAP values provide the influence of each feature as the change in log-odds of receiving thrombolysis. SHAP values expressed as log-odds are additive, i.e. the final log-odds of receiving thrombolysis is the sum of the base model prediction (the log-odds of receiving thrombolysis before feature influences are considered), and the SHAP values for each feature (comprised of the feature's main effect and all of the pairwise interaction effects with each of the other features). 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{The relationship between feature values and the odds of receiving thrombolysis}
-% notebook 03d
+
 For each feature, we examined the relationship between feature values and their corresponding SHAP values (we used values from the \emph{all data} model).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{How much of the between-hospital thrombolysis use can be explained by the identity of the hospital attended?}%How the hospital SHAP value compares with the hospitals use of thrombolysis}
+\subsection{How much of the between-hospital thrombolysis use can be explained by the identity of the hospital attended?}
 
-For each hospital we compared the mean SHAP value for the hospital attended (using values from the \emph{all data} model) with the hospitals observed thrombolysis use. Each hospital has their own patient population.
+For each hospital we compared the mean SHAP main effect value for the hospital attended (using values from the \emph{all data} model) with the hospitals observed thrombolysis use. Each hospital has their own patient population.
 
-To reveal the variation in thrombolysis rate due to hospital, rather than patient mix, we also compared the mean hospital attended SHAP value for the identical 10k patient cohort attending each hospital, with the hospitals' predicted thrombolysis use for this 10k patient cohort (we used values from the \emph{10k holdout} model).
+To reveal the variation in thrombolysis rate due to hospital, rather than patient mix, we also compared the mean hospital attended SHAP main effect value for the identical 10k patient cohort attending each hospital, with the hospitals' predicted thrombolysis use for this 10k patient cohort (we used values from the \emph{10k holdout} model).
 
-%To provide a more pure \emph{hospital effect} result, we removed the \emph{ patient effect}) by also comparing the hospital SHAP value from the model trained on 78,928 patients and pass all of the 10k patients (that were held back from the training process) though the model, whilst setting the hospital ID to each hospital in turn.
+By using the SHAP main effect (instead of the full SHAP value) it removes all interactions with the other features, which prevents the possible leakage of patient information into the hospital attended value.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{How much of the between-hospital thrombolysis use can be explained by the differences in the hospital identity and processes, and the differences in the patient populations?}%How much of the hospitals use of thrombolysis cahttps://www.overleaf.com/project/63f61a01afba613ac81702c6n be explained by the https://www.overleaf.com/project/63f61a01afba613ac81702c6differences in the hospital processes, and the differences in the patient mix
+\subsection{How much of the between-hospital thrombolysis use can be explained by the differences in the hospital identity and processes, and the differences in the patient populations?}
 
-%This section takes a more refined approach at attributing the contribution of hospital thrombolysis use variation between the difference in the hospitals and the difference in the patients mix. 
+%Hospital attended SHAP values are comprised of the attended hospital's main effect and the sum of its interactions with all other features. This includes interactions with the features that describe the patient, which could allow for possible leakage of patient information into the hospital attended SHAP value. We may further isolate the effect of the hospital or patients by including only the interactions with other related features.
 
-Hospital attended SHAP values are comprised of the attended hospital's main effect and the sum of its interactions with all other features. This includes interactions with the features that describe the patient, which could allow for possible leakage of patient information into the hospital attended SHAP value. We may further isolate the effect of the hospital or patients by including only the interactions with other related features.
+The 10 features in the model can be classified into two subsets: 1) `patient descriptive features' (features that describe the patients characteristics), and 2) `hospital descriptive features' (features that describe the hospital’s identity or process). To analyse the influence that each subset of features has on the thromoblysis rate, we calculated the `subset SHAP value' for each feature, which only includes the components of its SHAP value that contain effects from the features in the same subset. This is expressed as the sum of the main effect and the interaction effects with the other features in the same subset. For each subset of features (hospital, or patient) we fitted a multiple regression to predict the hospitals observed thrombolysis rate from the mean subset SHAP value of each feature, for patients attending each hospital (using values from the \emph{all data} model). We also fitted a multiple regression using the subset SHAP values for all 10 features (both hospital and patient descriptive features). For this analysis, we only included the single one-hot encoded feature for the attended hospital. 
 
-The 10 features in the model can be classified into two subsets: 1) `patient descriptive features' (features that describe the patients characteristics), and 2) `hospital descriptive features' (features that describe the hospital’s identity or process). We calculated the `subset SHAP value' for each feature by only including the components of its SHAP value that contain effects from the features in the same subset. This is expressed as the sum of the main effect and the interaction effects with the other features in the same subset. For each subset of features (hospital, or patient) we fitted a multiple regression to predict the hospitals observed thrombolysis rate from the mean subset SHAP value of each feature, for patients attending each hospital (using values from the \emph{all data} model). We fitted a multiple regression using the subset SHAP value for all 10 features (both hospital and patient descriptive features). For this analysis, we only included the single one-hot encoded feature for the attended hospital. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%The 10 features in the model can be classified as either those that are describing the patients characteristics (the “patient descriptive features”) or those that are describing the hospital’s processes (the “hospital descriptive features”). We refined the SHAP value for each feature by only including the interactions that also explain it's fellow descriptive subgroup features. This is expressed as the sum of the main effect and the interaction effects with the other features within it’s descriptive subgroup. For each subgroup of descriptive features (hospital, or patient) we fitted a multiple regression to predict the hospitals observed thrombolysis rate from the median refined SHAP value of each feature, for patients attending each hospital (using values from the all data model). We also fitted a multiple regression using the refined SHAP values for both hospital and patient descriptive features. For this analysis, we only included the single one-hot encoded feature for the attended hospital. 
-
-%The 10 features in the model can be classified as either those that are describing the patients characteristics (the “patient descriptive features”) or those that are describing the hospital’s processes (the “hospital descriptive features”). There are eight patient descriptive features (age, stroke severity, prior disability, onset-to-arrival time, stroke type, type of onset time, anticoagulants, and onset during sleep) and there are two hospital descriptive features (arrival-to-scan time, and hospital attended). For this analysis, we only included the single one-hot encoded feature for the attended hospital (and did not include the other 131 one-hot encoded features for the unattended hospitals). We refined the SHAP value for each feature by only including the parts that also explain whichever descriptive group it is in. This is expressed as the sum of the main effect and the interaction effects with the other features within it’s descriptive subgroup. For the feature “arrival to scan”, which is part of the hospital descriptive subgroup, its refined SHAP value is the main effect plus the interaction with the feature hospital attended. For each of the features in the patient descriptive subgroup, its refined SHAP value is the main effect plus the sum of the interactions with each of the other seven patient descriptive features. For each set of descriptive features (hospital and patient) we fitted a multiple regression to predict the hospitals observed thrombolysis rate from the median refined SHAP value of each feature for patients attending each hospital (using values from the all data model).
-
-
-
-
-%\iffalse
 \subsection{Variation in hospital thrombolysis use for patient subgroups}
 
-\iffalse
-We analysed the observed and predicted use of thrombolysis in four subgroups of patients. One `ideally' thrombolysable patients, and three `sub-optimal' thrombolysable patient groups. We based the ideally thrombolysable definition on observing the relationships between feature values and thrombolysis use. The `sub-optimal' patient groups were selected from all patients, apart from using a cut-off of one feature for each group. The four sub-groups are defined as:
+Informed by the SHAP values, we analysed the observed and predicted use of thrombolysis in eleven subgroups of patients: one subgroup for `ideally' thrombolysable patients, nine `sub-optimal' thrombolysable patient subgroups (one subgroup per feature), and one subgroup with two sub-optimal features. We based the ideally thrombolysable definition on observing the relationships between feature values and thrombolysis use. The `sub-optimal' patient subgroups were selected from all patients, apart from using a cut-off of one feature for each group. The eleven patient subgroups are defined as:
 
 \begin{enumerate}
-  \item An `ideally' thrombolysable patient:
+  \item An \emph{`ideally'} thrombolysable patient:
   \begin{itemize}
-    \item Mid-level stroke severity (NIHSS in range 10-25)
-    \item Short arrival-to-scan time (less than 30 minutes)
-    \item Stroke caused by infarction
-    \item Precise stroke onset time known
-    \item No pre-stroke disability (mRS 0)
-    \item Not taking atrial fibrillation anticoagulants
-    \item Short onset-to-arrival time (less than 90 minutes)
-    \item Younger than 80 years old
-    \item Onset not during sleep
-  \end{itemize}
-  \item Patients with a mild stroke severity (NIHSS less than 5)
-  \item Patients with no precise stroke onset time known
-  \item Patients with pre-stroke disability (mRS greater than 2)
-\end{enumerate}
-
-The observed thrombolysis use at each hospital was taken from the SSNAP dataset, with data limited to the patients that matched the patient characteristics and attending each hospital (and so the patient population was different for each hospital).
-
-In order to reveal the variation in thrombolysis that was due to hospital processes and decision-making we predicted thrombolysis use for the same patient mix at each hospital by using the \emph{10k holdout} model.
-\fi
-
-Informed by the SHAP values, we analysed the observed and predicted use of thrombolysis in eleven subgroups of patients: one subgroup for `ideally' thrombolysable patients, nine `sub-optimal' thrombolysable patient subgroups (one subgroup per feature), and one subgroup with two sub-optimal features. We based the ideally thrombolysable definition on observing the relationships between feature values and thrombolysis use. The `sub-optimal' patient groups were selected from all patients, apart from using a cut-off of one feature for each group. The eleven patient subgroups are defined as:
-
-% (selecting patients based on one feature set to a sub-optimal value)
-
-\iffalse
-We analysed the observed and predicted use of thrombolysis in subgroups of patients. One `ideally' thrombolysable patient, and nine (one per feature) `sub-optimal' thrombolysable patient groups (selecting patients based on one feature set to a sub-optimal value). We based the ideal definition on observing the relationships between feature values and thrombolysis use, and chose the 'sub-optimal' feature value by choosing a value that's within the contentious range for decision making (a feature value that corresponds with a SHAP value of zero, or the least favourable for binary features). The ten sub-groups are defined as:
-\fi
-
-\begin{enumerate}
-  \item An `ideally' thrombolysable patient:
-  \begin{itemize}
+    \setlength\itemsep{-2mm}
     \item Mid-level stroke severity (NIHSS in range 10-25)
     \item Short arrival-to-scan time (less than 30 minutes)
     \item Stroke caused by infarction
@@ -177,43 +120,6 @@ We analysed the observed and predicted use of thrombolysis in subgroups of patie
 
 The observed thrombolysis use at each hospital was taken from the SSNAP dataset, with data limited to the patients that matched the patient characteristics and attending each hospital (and so the patient population was different for each hospital).
 
-In order to reveal the variation in thrombolysis that was due to hospital decision-making we predicted thrombolysis use for the same patient mix at each hospital by using the \emph{10k holdout} model.
-
-
-
-
-%To provide a purer \emph{hospital effect} result, we removed the \emph{patient effect} by also providing a predicted thrombolysis use for the same patient mix (10k patient cohort) at each hospital by using the \emph{10k holdout model}.
-
-%To provide a purer \emph{hospital effect} result, we removed the \emph{ patient effect}) by also providing a predicted thrombolysis use for the same patient mix at each hospital. Using the model trained on 78,928 patients, pass all of the 10k patients (that were held back from the training process) though the model, whilst setting the hospital ID to each hospital in turn.
-%\fi
+In order to reveal the variation in thrombolysis that was due to hospital decision-making we predicted thrombolysis use for the same patient subgroups at each hospital by using the \emph{10k holdout} model.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\iffalse
-\subsection{How individual hospitals may modify general patterns of thrombolysis}
-
-The SHAP main effect of a feature captures the general pattern of thrombolysis use (in relation to the feature value), then each SHAP interaction effect with another feature may either strengthen or attenuate that main effect. We assessed a features main effect in isolation, and also in combination with the interaction effect with an individual hospital, to understand how individual hospitals respond to feature values differently in terms of their clinical decision to use thrombolysis. We used values from the \emph{all data model}.
-\fi
-%In addition to the overall SHAP value for each feature, we can access its individual components: 1) the features \emph{main effect} and 2) all of the pair-wise \emph{interaction effects} with each of the other features. The features main effect captures the general pattern of thrombolysis use (in relation to the feature value), then each interaction effect may either strengthen or attenuate the main effect. We will use this to 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%\subsection{Comparing hospital decision making }
-%\subsubsection{Method 1: 10k patient cohort}
-
-%\kpFIXME{KP comment: I edited this paragraph, I got confused with "comparing thrombolysis use between methods". Sorry if I misunderstood and this now does not represent what you were trying to say}
-%To compare thrombolysis use between hospitals, we separated out 10k patients (chosen at random) which were held back from the training phase. The model was trained on the remaining 78,928 real patients (with these patients attending their actual hospital). The use of thrombolysis at each hospital was then predicted for the same 10k cohort of patients (those that were held back from the training phase) by passing all of the 10k patients though the model whilst setting the hospital ID to each hospital in turn.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsubsection{Method 2: Artificial patients}
-%\kpFIXME{KP comment: I edited this paragraph, I got confused with "comparing thrombolysis use between methods". Sorry if I misunderstood and this now does not represent what you were trying to say}
-%Another method to compare thrombolysis use between hospitals, we constructed artificial patients and passed those through the model for each hospital. When investigating artificial patients, we trained the model on all of the 88,928 real patients. 
-\iffalse
-\subsection{Comparing predicted thrombolysis decisions across hospitals, using artificial patients}
-
-An artificial patient is created by defining all of the patients feature values, thus creating a patient that may not be present in the original dataset, or indeed exist in `real life'. Artificial patients may be used to explore how decisions vary between hospitals for the same (very specific) patient by passing them through the model for each hospital. When investigating artificial patients, we used the \emph{all data model}. Here we define, and use, two artificial patients: 
-\begin{enumerate}
-    \item \emph{Ideally thrombolysable patient}: a moderate/severe stroke severity (NIHSS 15), with a precise onset time not during sleep, infarction, an onset-to-arrival of 60 minutes, an arrival-to-scan of 15 minutes, no prior disability, aged 72, and not using anticoagulants for atrial fibrillation.
-    \item \emph{Likely thrombolysable patient}: a mild stroke severity (NIHSS 5), with an estimated onset time not during sleep, infarction, an onset-to-arrival of 60 minutes, an arrival-to-scan of 15 minutes, no prior disability, aged 72, and not using anticoagulants for atrial fibrillation. 
-\end{enumerate}
-
-We selected the characteristics of an `ideal' patient by observations of SHAP values. Note that only the first two characteristics are different between these two artificial patients.
-\fi

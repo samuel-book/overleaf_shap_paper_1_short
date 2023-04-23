@@ -30,6 +30,7 @@
 \newcommand{\tmnote}[2][\textcolor{green}{\dagger}]{\textcolor{green}{$#1$}\marginpar{\color{green}\raggedright\tiny$#1$ #2}}
 \newcommand{\tmFIXME}[1]{\textcolor{green}{[\textbf{FIXME} \textsl{#1}]}}
 
+\hbadness=1000000 % Turn off \hbox badness warnings
 
 \begin{document}
 
@@ -59,6 +60,11 @@
 \clearpage
 \newpage
 % Use * to avoid numbering of section
+\include{sections/7_extras}
+
+% Force new page
+\clearpage
+\newpage
 \include{sections/appendix}
 
 \end{document}
