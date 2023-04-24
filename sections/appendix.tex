@@ -377,7 +377,7 @@ Thrombolysis use in the original data varied between hospitals (Figure \ref{fig:
 All work was conducted in Python (v3.8). All code is available at: 
 
 \begin{enumerate}
-    \item GitHub repository: \url{https://github.com/samuel-book/samuel_shap_paper_1} (Release 3.0.0; DOI: 10.5281/zenodo.7856495)
+    \item GitHub repository: \url{https://github.com/samuel-book/samuel_shap_paper_1} \cite{samuel_paper_1_github}
     \item Jupyter book: \url{https://samuel-book.github.io/samuel_shap_paper_1/}
 \end{enumerate}
 
@@ -516,20 +516,6 @@ Figure \ref{fig:roc} shows the receiver operating characteristic curve, along wi
 \includegraphics[width=1\textwidth]{./images/02_xgb_10_features_roc_sens_spec}
 \caption{Model accuracy of a XGBoost model using 10 features. Left: Receiver Operating Characteristic (ROC) Area Under Curve (AUC). Right: The trade-off between Sensitivity and Specificity. Accuracy was measured with stratified 5-fold cross-validation, and both charts show all 5 k-fold replicates.}
 \label{fig:roc}
-\end{figure}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\subsection{Validation of hospital thrombolysis use}
-
-With k-fold validation, every instance is in one, but only one, test set. The test sets may therefore be combined to have predictions for the whole data set. Using these collated results we compared predicted thrombolysis use at each hospital with the actual (observed) thrombolysis use (figure \ref{fig:thrombolysis_pred_observed}). There was very good agreement between predicted and observed thrombolysis use at each hospital (r-squared 0.977).
-
-\begin{figure}
-\centering
-\includegraphics[width=0.6\textwidth]{./images/02_xgb_10_features_observed_predicted_rates}
-\caption{Comparison of predicted and observed thrombolysis use for 132 hospitals.}
-\label{fig:thrombolysis_pred_observed}
 \end{figure}
 
 

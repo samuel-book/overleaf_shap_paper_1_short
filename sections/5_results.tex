@@ -29,7 +29,14 @@ Correlations between the 10 features were measured using coefficients of determi
 
 \subsubsection{Model accuracy}
 
-Model accuracy was measured using stratified 5-fold cross validation. Overall accuracy was 85.0\% (83.9\% sensitivity and specificity could be achieved simultaneously). The ROC AUC was 0.918. The model predicted hospital thrombolysis use at each hospital with very good accuracy (r-squared = 0.977). This maintains the high accuracy of our previously published model with overall accuracy of 84.3\% (83.2\% sensitivity and specificity could be achieved simultaneously), and mean ROC AUC of 0.906 \cite{allen_use_2022}.
+Model accuracy was measured using stratified 5-fold cross validation. Overall accuracy was 85.0\% (83.9\% sensitivity and specificity could be achieved simultaneously). The ROC AUC was 0.918. The model predicted hospital thrombolysis use at each hospital with very good accuracy (r-squared = 0.977, figure \ref{fig:thrombolysis_pred_observed}). This maintains the high accuracy of our previously published model with overall accuracy of 84.3\% (83.2\% sensitivity and specificity could be achieved simultaneously), and mean ROC AUC of 0.906 \cite{allen_use_2022}.
+
+\begin{figure}
+\centering
+\includegraphics[width=0.6\textwidth]{./images/02_xgb_10_features_observed_predicted_rates}
+\caption{Comparison of predicted and observed thrombolysis use for 132 hospitals.}
+\label{fig:thrombolysis_pred_observed}
+\end{figure}
 
 The appendix contains further model accuracy analysis.
 
@@ -37,9 +44,14 @@ The appendix contains further model accuracy analysis.
 \subsection{Individual patient SHAP values}
 SHAP values are presented as how they affect log odds of receiving thrombolysis, but for individual predictions, probability values are more intuitive. Figure \ref{fig:results_waterfall} shows waterfall plots for an example of a patient with low (top) and high (bottom) probability of receiving thrombolysis. Waterfall plots show the influence of features for an individual prediction (in our case, patient). The SHAP model starts with a base prediction of a 24\% probability of receiving thrombolysis, before feature values are taken into account. For the patient with a low probability of receiving thrombolysis, the two most influential features reducing the probability of receiving thrombolysis were a long arrival-to-scan time (138 minutes) and a low stroke severity (NIHSS=2). For the patient with a high probability of receiving thrombolysis, the two most influential features increasing the probability of receiving thrombolysis were a short arrival-to-scan time (17 minutes) and a moderate stroke severity (NIHSS=14). 
 
-\begin{figure}[!ht]
-    \includegraphics[width=0.9\textwidth]{./images/03_xgb_10_features_waterfall_probability_low}
-    \includegraphics[width=0.9\textwidth]{./images/03_xgb_10_features_waterfall_probability_high}
+\begin{figure}%[!ht]
+    \caption*{\footnotesize{\textsf{Patient with low probability of receiving thrombolysis}}}
+    \vspace{-4mm} % reduce space after caption
+    \includegraphics[width=0.75\textwidth]{./images/03_xgb_10_features_waterfall_probability_low}
+    \vspace{2mm}
+    \caption*{\footnotesize{\textsf{Patient with high probability of receiving thrombolysis}}}
+    \vspace{-4mm} % reduce space after caption
+    \includegraphics[width=0.75\textwidth]{./images/03_xgb_10_features_waterfall_probability_high}
 \caption{Waterfall plots showing the influence of each feature on the predicted probability of a single patient receiving thrombolysis. Top: An example of a patient with a low probability (2.6\%) of receiving thrombolysis. Bottom: An example of a patient with a high probability (95.7\%) of receiving thrombolysis.}
 \label{fig:results_waterfall}
 \end{figure}
@@ -49,6 +61,7 @@ SHAP values are presented as how they affect log odds of receiving thrombolysis,
 
 \subsection{The relationship between feature values and the odds of receiving thrombolysis}
 
+\begin{minipage}{1\textwidth}
 Figure \ref{fig:shap_feature_subfigure} shows the relationship between patient level feature values and their SHAP values. Key observations are (with SHAP influence converted from log-odds to odds):
 
 \begin{itemize}
@@ -63,8 +76,10 @@ Figure \ref{fig:shap_feature_subfigure} shows the relationship between patient l
     \item \emph{Onset during sleep}: The odds of receiving thrombolysis were about 4 fold lower for onset during sleep.
     \item \emph{Hospital attended}: There was a 13 fold difference in odds of receiving thrombolysis between hospitals.
 \end{itemize}
+\end{minipage}
 
 In summary the most thrombolysable patients have: an infarction stroke type; shorter arrival-to-scan times; moderate to severe stroke severity with NIHSS 10-25; a precise onset time; lower pre-stroke disability; were not taking anticoagulant medication; shorter onset-to-arrival times; were younger; did not have onset during sleep; attend a hospital with a high predisposition to use thrombolysis.
+
 
 % SHAP violon plots
 
@@ -72,17 +87,18 @@ In summary the most thrombolysable patients have: an infarction stroke type; sho
 \centering
 \begin{subfigure}{.9\textwidth}
   \centering
+    \caption*{\footnotesize{\textsf{Violin plots for relationship between SHAP values and feature values}}}
     \includegraphics[width=1.\textwidth]{./images/03a_xgb_10_features_thrombolysis_shap_violin_all_features}
-    \caption{}
+    
   \label{fig:shap_feature_subfigure_a}
 \end{subfigure}
 \begin{subfigure}{.9\textwidth}
   \centering
+  \caption*{\footnotesize{\textsf{Histogram of hospital SHAP values}}}
     \includegraphics[width=1.\textwidth]{./images/03a_xgb_10_features_hosp_shap_hist}
-    \caption{}
   \label{fig:shap_feature_subfigure_b}
 \end{subfigure}
-\caption{Plots showing the relationship between SHAP values and feature values. (a) Violin plots showing the relationship between SHAP values and feature values. The horizontal line shows the median SHAP value. The plots are ordered in ranked feature importance (using the mean absolute SHAP value across all instances) (b) Histogram showing the frequency of SHAP values for the one-hot encoded hospital feature.}
+\caption{Plots showing the relationship between SHAP values and feature values. Top: Violin plots showing the relationship between SHAP values and feature values. The horizontal line shows the median SHAP value. The plots are ordered in ranked feature importance (using the mean absolute SHAP value across all instances). Bottom: Histogram showing the frequency of SHAP values for the one-hot encoded hospital feature.}
 \label{fig:shap_feature_subfigure}
 \end{figure}
 
@@ -121,7 +137,7 @@ We predicted thrombolysis use using mean subset SHAP values for patients attendi
 \begin{figure}[!h]
     \centering
     \includegraphics[width=0.9\textwidth]{./images/03f_xgb_10_features_multiple_regression_patient_hospital}
-    \caption{Multiple regression of subset SHAP values (mean of patients attending hospital) with hospital observed thrombolysis rate. LHS: Subset SHAP values for the eight patient descriptive features (age, stroke severity, prior disability, onset-to-arrival time, stroke type, type of onset time, anticoagulants, and onset during sleep). Middle: Subset SHAP values for the two hospital descriptive features (arrival-to-scan time, and hospital attended). RHS: Subset SHAP values for all 10 features (for both hospital and patient descriptive features).}
+    \caption{Multiple regression of subset SHAP values (mean of patients attending hospital) with hospital observed thrombolysis rate. Left: Subset SHAP values for the eight patient descriptive features (age, stroke severity, prior disability, onset-to-arrival time, stroke type, type of onset time, anticoagulants, and onset during sleep). Middle: Subset SHAP values for the two hospital descriptive features (arrival-to-scan time, and hospital attended). Right: Subset SHAP values for all 10 features (for both hospital and patient descriptive features).}
   \label{fig:shap_multiple_regression}
 \end{figure}
 
@@ -133,7 +149,7 @@ Figure \ref{fig:results_boxplot} shows boxplots of observed and predicted use of
 
 \begin{figure}[!h]
 \centering
-\includegraphics[width=1\textwidth]{./images/04c_xgb_10_features_10k_cohort_actual_vs_modelled_subgroup_boxplot}
+\includegraphics[width=0.75\textwidth]{./images/04c_xgb_10_features_10k_cohort_actual_vs_modelled_subgroup_boxplot}
 \caption{Boxplot for either observed (top) or predicted (bottom) use of thrombolysis for subgroups of patients. The `ideal patients' subgroup has a mid-level stroke severity (NIHSS in range 10-25), short arrival-to-scan time (less than 30 minutes), stroke caused by infarction, precise stroke onset time known, no pre-stroke disability (mRS 0), not taking any atrial fibrillation anticoagulants, short onset-to-arrival time (less than 90 minutes), younger than 80 years old, and onset not during sleep. The single features are ordered in ranked feature importance (using the mean absolute SHAP value across all instances). }
 \label{fig:results_boxplot}
 \end{figure}
