@@ -19,7 +19,7 @@ The best model with 1, 2, 5, 10, 25 \& all 60 original features had ROC AUCs of 
     \item \emph{Stroke team}: Stroke team attended (hospital identifier)
     \item \emph{Use of anticoagulants}: Use of prior anticoagulant (1 = Yes, 0 = No)
     \item \emph{Onset-to-arrival time}: Time from onset of stroke to arrival at hospital (mins)
-    \item \emph{Onset during sleep}: Did stroke occur in sleep?
+    \item \emph{Onset during sleep}: Did stroke occur in sleep? (1 = Yes, 0 = No)
     \item \emph{Age}: Age (as midpoint of 5 year age bands)
 \end{itemize}
 
@@ -82,7 +82,7 @@ In summary the most thrombolysable patients have: an infarction stroke type; sho
     \caption{}
   \label{fig:shap_feature_subfigure_b}
 \end{subfigure}
-\caption{(a) Violin plots showing the relationship between SHAP values and feature values. The horizontal line shows the median SHAP value. The plots are ordered in ranked feature importance (using the mean absolute SHAP value across all instances) (b) Histogram showing the frequency of SHAP values for the one-hot encoded hospital feature.}
+\caption{Plots showing the relationship between SHAP values and feature values. (a) Violin plots showing the relationship between SHAP values and feature values. The horizontal line shows the median SHAP value. The plots are ordered in ranked feature importance (using the mean absolute SHAP value across all instances) (b) Histogram showing the frequency of SHAP values for the one-hot encoded hospital feature.}
 \label{fig:shap_feature_subfigure}
 \end{figure}
 
@@ -98,12 +98,12 @@ Using the \emph{10k holdout model}, the predicted use of thrombolysis across the
 \centering
 \begin{subfigure}{.49\textwidth}
   \centering
-    \caption*{\textsf{Observed thrombolysis}}
+    \caption*{\footnotesize{\textsf{Observed thrombolysis}}}
     \includegraphics[width=0.9\textwidth]{./images/03c_xgb_10_features_attended_hosp_shap_maineffect_vs_ivt_rate}
 \end{subfigure}
 \begin{subfigure}{.49\textwidth}
   \centering
-    \caption*{\textsf{Predicted 10K thrombolysis}}
+    \caption*{\footnotesize{\textsf{Predicted 10K thrombolysis}}}
     \includegraphics[width=0.9\textwidth]{./images/04a_xgb_10_features_10k_cohort_attended_hosp_shap_maineffect_vs_ivt_rate}
 \end{subfigure}
 
@@ -137,9 +137,3 @@ Figure \ref{fig:results_boxplot} shows boxplots of observed and predicted use of
 \caption{Boxplot for either observed (top) or predicted (bottom) use of thrombolysis for subgroups of patients. The `ideal patients' subgroup has a mid-level stroke severity (NIHSS in range 10-25), short arrival-to-scan time (less than 30 minutes), stroke caused by infarction, precise stroke onset time known, no pre-stroke disability (mRS 0), not taking any atrial fibrillation anticoagulants, short onset-to-arrival time (less than 90 minutes), younger than 80 years old, and onset not during sleep. The single features are ordered in ranked feature importance (using the mean absolute SHAP value across all instances). }
 \label{fig:results_boxplot}
 \end{figure}
-\newpage
-
-
-
-
-
